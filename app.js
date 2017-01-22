@@ -1,28 +1,6 @@
 (function () {
   'use strict';
 
-
-
-  //objetos
-  // var shoppingList2 = [
-  // {
-  //   name: "Milk",
-  //   quantity: "2"
-  // },
-  // {
-  //   name: "Donuts",
-  //   quantity: "200"
-  // },
-  // {
-  //   name: "Cookies",
-  //   quantity: "300"
-  // },
-  // {
-  //   name: "Chocolate",
-  //   quantity: "5"
-  // }
-  // ];
-
   angular.module('ShoppingListCheckOff', [])
   .controller('ToBuyController',ToBuyController)
   .controller('AlreadyBoughtController',AlreadyBoughtController)
@@ -32,21 +10,22 @@
   ToBuyController.$inject = ['ShoppingListService'];
 
   function ToBuyController(ShoppingListService) {
-    var showList = this;
+    var aComprar = this;
 
     //AQUI DEFINI O NOME DA VARÍAVEL COMO this.items
-    showList.items = ShoppingListService.getItems();
+    aComprar.itemsAComprar = ShoppingListService.getItems();
 
     //AQUI ESTOU REMOVENDO OS ITENS DO PRIMEIRO ARRAY PASSANDO O INDEX
-    showList.removeItem =  function (index) {
-      ShoppingListService.removeItem(index);
+    aComprar.buyItem =  function (index) {
+      ShoppingListService.buyItem(index);
     };
   }
 
   AlreadyBoughtController.$inject = ['ShoppingListService'];
 
   function AlreadyBoughtController(ShoppingListService) {
-    showList.itemsComprados = ShoppingListService.getCompras();
+    var itemsComprados = this;
+    itemsComprados.items = ShoppingListService.getCompras();
   }
 
 
@@ -54,9 +33,9 @@
 function ShoppingListService() {
   var service = this;
  // Está variável estou utilizando para adicionar os itens que estão sendo removidos
- var itemsComprados = [];
 
- var items = [
+
+ var itemsParaComprar = [
  {
   name: "Milk",
   quantity: "2"
@@ -79,11 +58,12 @@ function ShoppingListService() {
 }
 ];
 
+var itemsComprados = [];
 
 
 //AQUI RETORNA TODOS OS ITENS PARA O CONTROLLER QUE O CHAMAR definido o nome como this.GetItems
 service.getItems = function () {
-  return items;
+  return itemsParaComprar;
 };
 
 //AQUI RETORNA TODOS OS ITENS PARA O CONTROLLER QUE O CHAMAR definido o nome como this.GetItems
@@ -92,13 +72,12 @@ service.getCompras = function () {
 };
 
 //AQUI ELE REMOVE ITEM DO ARRAY E DEFINIDO O NOME COMO this.removeItem
-service.removeItem = function (itemIndex) {
-   itemsComprados =  items.splice(itemIndex, 1); //aqui ele pega o index que foi recebido como parâmetro e remove somente 1 item
+service.buyItem = function (itemIndex) {
+   var item = itemsParaComprar.splice(itemIndex, 1)[0]; //aqui ele pega o index que foi recebido como parâmetro e remove somente 1 item
+   itemsComprados.push({
+    name: item.name,
+    quantity: item.quantity,
+  })
  };
-
- service.addItem = function (array) {
-  items.push(array);
-};
-
 }
 })();
