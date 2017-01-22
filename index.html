@@ -24,20 +24,19 @@
     }
   </style>
 </head>
-
 <div class="container">
   <h1>Shopping List Check Off</h1>
 
   <div class="row">
     <!-- To Buy List -->
-    <div class="col-md-6" ng-controller="ToBuyController as aComprar"> 
+    <div class="col-md-6" ng-controller="ToBuyController as paraComprar"> 
       <h2>To Buy:</h2>
       <ul>
-        <li ng-repeat="item in aComprar.itemsAComprar">Nome: {{item.name}} - Quantidade: {{item.quantity}} <button class="btn btn-default" ng-click="aComprar.buyItem($index);">
+      <li ng-repeat="item in paraComprar.itemsAComprar">Nome: {{item.name}} - Quantidade: {{item.quantity}} <button class="btn btn-default" ng-click="paraComprar.buyItem($index);">
          <span class="glyphicon glyphicon-ok"></span> Buy</button>
        </li>
      </ul>
-     <div ng-show= "aComprar.itemsAComprar.length == 0" class="emptyMessage">Everything is bought!</div>
+     <div ng-show= "paraComprar.itemsAComprar.length == 0" class="emptyMessage">Everything is bought!</div>
    </div>
 
    <!-- Already Bought List -->

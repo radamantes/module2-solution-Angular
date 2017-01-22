@@ -8,20 +8,20 @@
 
 
   ToBuyController.$inject = ['ShoppingListService'];
+  AlreadyBoughtController.$inject = ['ShoppingListService'];
+
 
   function ToBuyController(ShoppingListService) {
-    var aComprar = this;
+    var paraComprar = this;
 
-    //AQUI DEFINI O NOME DA VARÍAVEL COMO this.items
-    aComprar.itemsAComprar = ShoppingListService.getItems();
+    //AQUI DEFINI O NOME DA VARÍAVEL COMO this.itemsAComprar e estou adicionando os itens na lista
+    paraComprar.itemsAComprar = ShoppingListService.getItemsToBuy();
 
-    //AQUI ESTOU REMOVENDO OS ITENS DO PRIMEIRO ARRAY PASSANDO O INDEX
-    aComprar.buyItem =  function (index) {
-      ShoppingListService.buyItem(index);
+    paraComprar.buyItem =  function (indexFromForm) {
+      ShoppingListService.buyItem(indexFromForm);
     };
   }
-
-  AlreadyBoughtController.$inject = ['ShoppingListService'];
+  
 
   function AlreadyBoughtController(ShoppingListService) {
     var itemsComprados = this;
@@ -32,37 +32,36 @@
 //ISTO SERVER PARA COMPARTILHAR INFORMAÇÃO ENTRE CONTROLLERS
 function ShoppingListService() {
   var service = this;
+
+  var itemsParaComprar = [
+  {
+    name: "Milk",
+    quantity: "2"
+  },
+  {
+    name: "Donuts",
+    quantity: "2"
+  },
+  {
+    name: "Cookies",
+    quantity: "3"
+  },
+  {
+    name: "Chocolate",
+    quantity: "5"
+  },
+  {
+    name: "Jamon",
+    quantity: "10"
+  }
+  ];
+
  // Está variável estou utilizando para adicionar os itens que estão sendo removidos
-
-
- var itemsParaComprar = [
- {
-  name: "Milk",
-  quantity: "2"
-},
-{
-  name: "Donuts",
-  quantity: "2"
-},
-{
-  name: "Cookies",
-  quantity: "3"
-},
-{
-  name: "Chocolate",
-  quantity: "5"
-},
-{
-  name: "Jamon",
-  quantity: "10"
-}
-];
-
-var itemsComprados = [];
+ var itemsComprados = [];
 
 
 //AQUI RETORNA TODOS OS ITENS PARA O CONTROLLER QUE O CHAMAR definido o nome como this.GetItems
-service.getItems = function () {
+service.getItemsToBuy = function () {
   return itemsParaComprar;
 };
 
@@ -73,11 +72,9 @@ service.getCompras = function () {
 
 //AQUI ELE REMOVE ITEM DO ARRAY E DEFINIDO O NOME COMO this.removeItem
 service.buyItem = function (itemIndex) {
-   var item = itemsParaComprar.splice(itemIndex, 1)[0]; //aqui ele pega o index que foi recebido como parâmetro e remove somente 1 item
-   itemsComprados.push({
-    name: item.name,
-    quantity: item.quantity,
-  })
- };
+  var item = itemsParaComprar[itemIndex];
+  itemsParaComprar.splice(itemIndex,1);
+  itemsComprados.push(item);
+};
 }
 })();
